@@ -42,6 +42,17 @@ namespace Shared.Timers {
 
 
         /**
+         * Adds a new mark to a running watch.
+         */
+        public void Mark() {
+            if (active == true) {
+                elapsed += Time.time - start;
+                start = Time.time;
+            }
+        }
+
+
+        /**
          * Resets and starts the watch.
          */
         public void Restart() {
@@ -60,10 +71,26 @@ namespace Shared.Timers {
 
 
         /**
+         * Gets the elsapsed time since the last mark in seconds.
+         */
+        public float GetMarkSeconds() {
+            return active ? Time.time - start : 0.0f;
+        }
+
+
+        /**
          * Gets the elsapsed time as a time span.
          */
         public TimeSpan GetTimeSpan() {
             return TimeSpan.FromSeconds(GetSeconds());
+        }
+
+
+        /**
+         * Gets the elsapsed time since the last mark as a time span.
+         */
+        public TimeSpan GetMarkTimeSpan() {
+            return TimeSpan.FromSeconds(GetMarkSeconds());
         }
     }
 }
