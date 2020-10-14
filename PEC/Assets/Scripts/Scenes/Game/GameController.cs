@@ -6,6 +6,7 @@ using Shared.Controllers;
 using Shared.Models;
 using Shared.Timers;
 
+
 /**
  * Race game logic controller.
  */
@@ -29,11 +30,8 @@ public class GameController : MonoBehaviour {
     /** Recorder of the current race */
     [SerializeField] private GameRecorder recorder = null;
 
-    /** Replayer of the current race */
-    [SerializeField] private GameReplayer replayer = null;
-
     /** Replayer of the best race as a ghost car */
-    [SerializeField] private GameReplayer ghostReplayer = null;
+    [SerializeField] private GameReplayer replayer = null;
 
     /** Chronometer for the time spent on the race */
     private StopWatch stopWatch = new StopWatch();
@@ -50,7 +48,8 @@ public class GameController : MonoBehaviour {
         InvokeRepeating("RefreshHeadupDisplay", 0.1f, 0.1f);
         circuit.MoveToPole(car.GetComponent<Transform>());
         stopWatch.Restart();
-        StartGhostReplayer();
+        LoadBestRaceRecording();
+        StartReplayer();
         StartRecorder();
     }
 
@@ -93,18 +92,10 @@ public class GameController : MonoBehaviour {
     /**
      * Starts the ghost replayer.
      */
-    private void StartGhostReplayer() {
-        if (ghostReplayer.GetRecording().Count > 0) {
-            ghostReplayer.SetActive(true);
-        }
-    }
-
-
-    /**
-     * Starts the game replayer.
-     */
     private void StartReplayer() {
-        replayer.SetActive(true);
+        if (replayer.GetRecording().Count > 0) {
+            replayer.SetActive(true);
+        }
     }
 
 
@@ -126,14 +117,28 @@ public class GameController : MonoBehaviour {
 
 
     /**
-     * Populates the ghost replay recording with the current game
+     * Loads the best race recording from player prefs.
+     */
+    private void LoadBestRaceRecording() {
+        if (PlayerPrefs.HasKey("BestRace")) {
+            Recording recording = replayer.GetRecording();
+            string json = PlayerPrefs.GetString("BestRaceRecording");
+            JsonUtility.FromJsonOverwrite(json, recording);
+        }
+    }
+
+
+    /**
+     * Populates the best race recording with the current game
      * recording if the time is better than what was stored.
      */
     private void UpdateBestRaceRecording() {
-        Recording best = ghostReplayer.GetRecording();
+        Recording best = replayer.GetRecording();
         Recording last = recorder.GetRecording();
 
         if (best.Count == 0 || best.Duration > last.Duration) {
+            string json = JsonUtility.ToJson(last);
+            PlayerPrefs.SetString("BestRaceRecording", json);
             best.Copy(last);
         }
     }
@@ -151,7 +156,7 @@ public class GameController : MonoBehaviour {
             this.Invoke("OnRaceFinished", 3.0f);
             stopWatch.Stop();
         } else {
-            StartGhostReplayer();
+            StartReplayer();
             stopWatch.Mark();
         }
     }
@@ -162,7 +167,6 @@ public class GameController : MonoBehaviour {
      */
     private void OnRaceFinished() {
         StopRecorder();
-        StartReplayer();
         headup.gameObject.SetActive(false);
         replay.gameObject.SetActive(true);
     }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ControlTarget
   - MusicPlayer
+  - CircuitCamera
   layers:
   - Default
   - TransparentFX
