@@ -7,11 +7,11 @@ namespace Shared.Models {
     /**
      * Stores the state of game objects on a period of time.
      */
-    [CreateAssetMenu]
+    [CreateAssetMenu, Serializable]
     public class Recording : ScriptableObject {
 
         /** Orientation samples of the recorded objects */
-        protected List<Sample[]> frames = new List<Sample[]>();
+        [SerializeField] protected List<Frame> frames = new List<Frame>();
 
         /** Time difference between two samples */
         public float SamplingPeriod = 0.25f;
@@ -39,7 +39,7 @@ namespace Shared.Models {
          * Obtain the samples at the given index.
          */
         public Sample[] Get(int index) {
-            return frames[index];
+            return frames[index].samples;
         }
 
 
@@ -47,7 +47,7 @@ namespace Shared.Models {
          * Sample the given game object's into a new frame.
          */
         public void Push(GameObject[] objects) {
-            frames.Add(CreateSamples(objects));
+            frames.Add(new Frame(CreateSamples(objects)));
         }
 
 
@@ -55,7 +55,7 @@ namespace Shared.Models {
          * Copy this recording information from another recording.
          */
         public void Copy(Recording recording) {
-            frames = new List<Sample[]>(recording.frames);
+            frames = new List<Frame>(recording.frames);
             SamplingPeriod = recording.SamplingPeriod;
         }
 
@@ -73,8 +73,8 @@ namespace Shared.Models {
          * transformation amount between frames as a percentage.
          */
         public void Transform(GameObject[] objects, int index, float amount) {
-            Sample[] currentSamples = frames[Math.Max(0, index)];
-            Sample[] previousSamples = frames[Math.Max(0, index - 1)];
+            Sample[] currentSamples = frames[Math.Max(0, index)].samples;
+            Sample[] previousSamples = frames[Math.Max(0, index - 1)].samples;
 
             for (int i = 0; i < objects.Length; i++) {
                 GameObject target = objects[i];

@@ -10,13 +10,13 @@ namespace Shared.Models {
     public class Sample {
 
         /** Position of the object's transform */
-        private Vector3 position;
+        [SerializeField] private Vector3 position;
 
         /** Rotation of the object's transform */
-        private Quaternion rotation;
+        [SerializeField] private Quaternion rotation;
 
         /** If the object's renderer is enabled */
-        private bool enabled;
+        [SerializeField] private bool enabled;
 
 
         /**
