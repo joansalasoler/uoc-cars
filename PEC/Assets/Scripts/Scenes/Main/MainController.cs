@@ -10,7 +10,7 @@ public class MainController : MonoBehaviour {
      * Start a new race.
      */
     public void StartNewGame() {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Race");
     }
 
 

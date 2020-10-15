@@ -1,31 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Vehicles.Car;
 using Shared;
+using Shared.Behaviours;
 using Shared.Controllers;
 using Shared.Models;
+using Shared.Services;
 using Shared.Timers;
 
 
 /**
  * Race game logic controller.
  */
-public class GameController : MonoBehaviour {
+public class GameController : HasRaceComponents {
 
-    /** Number of laps to complete on a race */
-    [SerializeField] private int laps = 3;
-
-    /** Player's car controller */
-    [SerializeField] private CarController car = null;
-
-    /** Race circuit controller */
-    [SerializeField] private CircuitController circuit = null;
+    [Header("Interface Controllers")]
 
     /** Head up display controller */
     [SerializeField] private HeadupController headup = null;
 
     /** Head up display controller */
-    [SerializeField] private ReplayController replay = null;
+    // [SerializeField] private ReplayController replay = null;
+
+    [Header("Race Recordings")]
 
     /** Recorder of the current race */
     [SerializeField] private GameRecorder recorder = null;
@@ -33,20 +31,42 @@ public class GameController : MonoBehaviour {
     /** Replayer of the best race as a ghost car */
     [SerializeField] private GameReplayer replayer = null;
 
+    [Header("Race Settings")]
+
+    /** Number of laps to complete on a race */
+    [SerializeField] private int numberOfLaps = 3;
+
     /** Chronometer for the time spent on the race */
     private StopWatch stopWatch = new StopWatch();
 
     /** Number of completed laps */
-    private int lapCount = 0;
+    private int currentLapCount = 0;
 
 
     /**
      * Invoked when the script is enabled.
      */
-    private void Start() {
+    protected override void Start() {
+        base.Start();
+
         Time.timeScale = 1.0f;
         InvokeRepeating("RefreshHeadupDisplay", 0.1f, 0.1f);
         circuit.MoveToPole(car.GetComponent<Transform>());
+
+        var cr = car.GetComponent<GameRecorderTargets>();
+        recorder.SetTargets(cr.targets);
+
+        var gr = ghost.GetComponent<GameRecorderTargets>();
+        replayer.SetTargets(gr.targets);
+
+        var cs = circuit.GetComponent<GameRecorderSlots>();
+        recorder.SetRecording(cs.lastRace);
+        replayer.SetRecording(cs.bestRace);
+
+        ghost.gameObject.SetActive(false);
+
+        circuit.onCompletion.AddListener(OnCircuitCompletion);
+
         stopWatch.Restart();
         LoadBestRaceRecording();
         StartReplayer();
@@ -77,15 +97,15 @@ public class GameController : MonoBehaviour {
      * If the last lap was completed.
      */
     private bool RaceHasFinished() {
-        return this.lapCount >= this.laps;
+        return this.currentLapCount >= this.numberOfLaps;
     }
 
 
     /**
      * Increase the numbre of laps completed.
      */
-    private int IncreseLapCount() {
-        return ++this.lapCount;
+    private int IncreaseCurrentLapCount() {
+        return ++this.currentLapCount;
     }
 
 
@@ -94,6 +114,7 @@ public class GameController : MonoBehaviour {
      */
     private void StartReplayer() {
         if (replayer.GetRecording().Count > 0) {
+            ghost.gameObject.SetActive(true);
             replayer.SetActive(true);
         }
     }
@@ -117,12 +138,20 @@ public class GameController : MonoBehaviour {
 
 
     /**
+     * Best race key name on the player preferences.
+     */
+    private string GetBestRaceKey() {
+        return $"BestRecording[{ circuit.GetId() }]";
+    }
+
+
+    /**
      * Loads the best race recording from player prefs.
      */
     private void LoadBestRaceRecording() {
-        if (PlayerPrefs.HasKey("BestRace")) {
+        if (PlayerPrefs.HasKey(GetBestRaceKey())) {
             Recording recording = replayer.GetRecording();
-            string json = PlayerPrefs.GetString("BestRaceRecording");
+            string json = PlayerPrefs.GetString(GetBestRaceKey());
             JsonUtility.FromJsonOverwrite(json, recording);
         }
     }
@@ -138,7 +167,7 @@ public class GameController : MonoBehaviour {
 
         if (best.Count == 0 || best.Duration > last.Duration) {
             string json = JsonUtility.ToJson(last);
-            PlayerPrefs.SetString("BestRaceRecording", json);
+            PlayerPrefs.SetString(GetBestRaceKey(), json);
             best.Copy(last);
         }
     }
@@ -149,11 +178,11 @@ public class GameController : MonoBehaviour {
      */
     private void OnCircuitCompletion() {
         headup.PushTimeMark(stopWatch.GetMarkTimeSpan());
-        this.IncreseLapCount();
+        this.IncreaseCurrentLapCount();
 
         if (this.RaceHasFinished()) {
             this.BlockCarControls(car);
-            this.Invoke("OnRaceFinished", 3.0f);
+            this.Invoke("OnRaceFinished", 2.0f);
             stopWatch.Stop();
         } else {
             StartReplayer();
@@ -168,6 +197,7 @@ public class GameController : MonoBehaviour {
     private void OnRaceFinished() {
         StopRecorder();
         headup.gameObject.SetActive(false);
-        replay.gameObject.SetActive(true);
+        SceneManager.LoadScene("Replay");
+        // replay.gameObject.SetActive(true);
     }
 }

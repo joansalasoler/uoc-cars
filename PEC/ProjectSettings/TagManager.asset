@@ -7,6 +7,8 @@ TagManager:
   - ControlTarget
   - MusicPlayer
   - CircuitCamera
+  - Circuit
+  - Ghost
   layers:
   - Default
   - TransparentFX

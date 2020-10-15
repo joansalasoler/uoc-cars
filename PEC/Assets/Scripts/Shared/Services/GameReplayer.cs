@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Shared.Models;
 
-namespace Shared.Models {
+namespace Shared.Services {
 
     /**
      * Replays a set of recorded game objects.
@@ -36,6 +36,22 @@ namespace Shared.Models {
          */
         public void SetActive(bool enabled) {
             this.enabled = enabled;
+        }
+
+
+        /**
+         * Sets this replayer's recording slot.
+         */
+        public void SetRecording(Recording recording) {
+            this.recording = recording;
+        }
+
+
+        /**
+         * Sets this replayer's recording targets.
+         */
+        public void SetTargets(GameObject[] targets) {
+            this.targets = targets;
         }
 
 

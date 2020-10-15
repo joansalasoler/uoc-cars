@@ -5,8 +5,18 @@ namespace Shared.Controllers {
 
     /**
      * Controller for the racing circuits.
+     *
+     * Each circuit may have a defined set of control points that define a full
+     * lap, so when an object with the the tag "ControlTarget" collides with
+     * each control on their specified order a lap is considered complete.
      */
     public class CircuitController : MonoBehaviour {
+
+        /** Invoked when the control target completes a lap */
+        public readonly CircuitCompletionEvent onCompletion = new CircuitCompletionEvent();
+
+        /** Unique circuit identifier */
+        [SerializeField] private string id = "Undefined";
 
         /** Start position of the car on the circuit */
         [SerializeField] private Transform polePosition = null;
@@ -14,12 +24,16 @@ namespace Shared.Controllers {
         /** Ordered controls points that define a complete lap */
         [SerializeField] private Collider[] controls = null;
 
-        /** Invoked when the control target completes a lap */
-        [SerializeField] private CircuitCompletionEvent onCompletion =
-            new CircuitCompletionEvent();
-
         /** Next control point that must be reached */
         private int nextControlIndex = 0;
+
+
+        /**
+         * Get this circuit identifier.
+         */
+        public string GetId() {
+            return id;
+        }
 
 
         /**

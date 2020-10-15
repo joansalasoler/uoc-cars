@@ -1,23 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Vehicles.Car;
 using System.Collections;
 using System.Collections.Generic;
+using Shared.Behaviours;
 using Shared.Models;
+using Shared.Services;
 
 
 /**
  * Replay screen controller.
  */
-public class ReplayController : MonoBehaviour {
+public class ReplayController : HasRaceComponents {
 
-    /** Race car object */
-    [SerializeField] private GameObject car = null;
+    [Header("Interface Controllers")]
 
-    /** Ghost car object */
-    [SerializeField] private GameObject ghost = null;
+    /** Video display controller */
+    [SerializeField] private VideoController video = null;
 
-    /** Race circuit object */
-    [SerializeField] private GameObject circuit = null;
+    [Header("Race Recordings")]
 
     /** Replayer of the best race as a ghost car */
     [SerializeField] private GameReplayer replayer = null;
@@ -29,14 +30,19 @@ public class ReplayController : MonoBehaviour {
     private Camera activeCamera = null;
 
 
-    private void Start() {
-        ghost.SetActive(false);
-        cameras.AddRange(GetChildCameras(circuit));
+    protected override void Start() {
+        base.Start();
 
-        foreach (var c in cameras) {
-            c.gameObject.SetActive(true);
-        }
+        var cr = car.GetComponent<GameRecorderTargets>();
+        replayer.SetTargets(cr.targets);
 
+        var cs = circuit.GetComponent<GameRecorderSlots>();
+        replayer.SetRecording(cs.lastRace);
+
+        ghost.gameObject.SetActive(false);
+        BlockCarControls(car);
+
+        cameras.AddRange(GetChildCameras(circuit.gameObject));
         StartReplayer();
         InvokeRepeating("SwitchCamera", 0.0f, 0.5f);
     }
@@ -46,6 +52,7 @@ public class ReplayController : MonoBehaviour {
      * Starts the game replayer.
      */
     private void StartReplayer() {
+        video.GetComponent<Canvas>().enabled = true;
         replayer.SetActive(true);
     }
 
@@ -69,7 +76,7 @@ public class ReplayController : MonoBehaviour {
         }
 
         foreach (var camera in cameras) {
-            float d = GetDistance(car, camera.gameObject);
+            float d = GetDistance(car.gameObject, camera.gameObject);
 
             if (d < distance) {
                 distance = d;
@@ -83,5 +90,14 @@ public class ReplayController : MonoBehaviour {
 
     private float GetDistance(GameObject a, GameObject b) {
         return Vector3.Distance(a.transform.position, b.transform.position);
+    }
+
+
+    /**
+     * Disables the user controller of a car.
+     */
+    private void BlockCarControls(CarController car) {
+        car.GetComponent<CarController>().enabled = false;
+        car.GetComponent<CarUserControl>().enabled = false;
     }
 }

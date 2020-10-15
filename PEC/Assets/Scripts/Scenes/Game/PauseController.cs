@@ -22,7 +22,7 @@ public class PauseController : MonoBehaviour {
      */
     public void RestartGame() {
         AudioListener.pause = false;
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Race");
     }
 
 
