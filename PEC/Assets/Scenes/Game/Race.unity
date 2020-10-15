@@ -159,7 +159,7 @@ MonoBehaviour:
   headup: {fileID: 1820322925}
   recorder: {fileID: 9872726}
   replayer: {fileID: 9872727}
-  numberOfLaps: 1
+  numberOfLaps: 3
 --- !u!4 &9872725
 Transform:
   m_ObjectHideFlags: 0
