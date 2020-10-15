@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 898850093}
   - component: {fileID: 898850092}
   m_Layer: 0
-  m_Name: RaceLoader
+  m_Name: SetupLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1285,7 +1285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0280ed7ca8c7fc54a7308f5a0347274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setup: {fileID: 11400000, guid: c5a619b46bcb405158ee96fb1a3d7acf, type: 2}
+  options: {fileID: 11400000, guid: c5a619b46bcb405158ee96fb1a3d7acf, type: 2}
 --- !u!4 &898850093
 Transform:
   m_ObjectHideFlags: 0

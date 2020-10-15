@@ -8182,6 +8182,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestCircuit
       objectReference: {fileID: 0}
+    - target: {fileID: 1996381972869073349, guid: 8337764a23f54e7c9953f6f58905ad0e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1996381972869073355, guid: 8337764a23f54e7c9953f6f58905ad0e,
         type: 3}
       propertyPath: onCompletion.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -8206,6 +8211,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1971452917}
     m_Modifications:
+    - target: {fileID: 4456008420535234724, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4456008420536774308, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -36.495003
+      objectReference: {fileID: 0}
     - target: {fileID: 4456008420902157736, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
         type: 3}
       propertyPath: m_Mesh
@@ -8279,7 +8294,7 @@ PrefabInstance:
     - target: {fileID: 4456008421167745509, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4456008421167745511, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
         type: 3}

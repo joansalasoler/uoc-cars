@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2354d19f459825432a8dedc070011ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recording: {fileID: 11400000, guid: bc87e3dab930e72e0a5fa98acbc35b26, type: 2}
+  recording: {fileID: 0}
   targets: []
 --- !u!114 &211309243
 MonoBehaviour:
@@ -240,7 +240,6 @@ MonoBehaviour:
   car: {fileID: 0}
   ghost: {fileID: 0}
   circuit: {fileID: 0}
-  video: {fileID: 647822838}
   replayer: {fileID: 211309242}
 --- !u!4 &211309244
 Transform:
@@ -1512,7 +1511,7 @@ GameObject:
   - component: {fileID: 2000919559}
   - component: {fileID: 2000919558}
   m_Layer: 0
-  m_Name: RaceLoader
+  m_Name: SetupLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1530,7 +1529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0280ed7ca8c7fc54a7308f5a0347274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setup: {fileID: 11400000, guid: c5a619b46bcb405158ee96fb1a3d7acf, type: 2}
+  options: {fileID: 11400000, guid: c5a619b46bcb405158ee96fb1a3d7acf, type: 2}
 --- !u!4 &2000919559
 Transform:
   m_ObjectHideFlags: 0
