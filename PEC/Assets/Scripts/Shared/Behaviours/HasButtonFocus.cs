@@ -13,7 +13,7 @@ namespace Shared.Behaviours {
          * Select the button when it is enabled.
          */
         private void OnEnable() {
-            Invoke("SelectButton", 0.05f);
+            Invoke("SelectButton", 0.1f);
         }
 
 
