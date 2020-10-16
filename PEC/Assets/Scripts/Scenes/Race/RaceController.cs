@@ -76,8 +76,8 @@ public class RaceController : HasRaceComponents {
      * Disables the user controller of a car.
      */
     private void BlockCarControls(CarController car) {
-        car.GetComponent<CarUserControl>().enabled = false;
         car.Move(0.0f, 0.0f, 0.0f, 1.0f);
+        car.GetComponent<CarUserControl>().enabled = false;
     }
 
 

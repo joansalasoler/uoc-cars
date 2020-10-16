@@ -14,7 +14,7 @@ using Shared.Services;
 public class ReplayController : HasRaceComponents {
 
     /** Tag of the circuit cameras */
-    public readonly string TAG_OF_CAMERA = "CircuitCamera";
+    public readonly string TAG_OF_CAMERA = "MainCamera";
 
     [Header("Race Recordings")]
 
@@ -35,8 +35,9 @@ public class ReplayController : HasRaceComponents {
         base.Start();
 
         ghost.gameObject.SetActive(false);
+        circuit.MoveToPole(car.GetComponent<Transform>());
 
-        BlockCarControls(car);
+        BlockCarComponents(car);
         SetupCircuitCameras();
         SetupGameRecordings();
         StartReplayer();
@@ -46,11 +47,13 @@ public class ReplayController : HasRaceComponents {
 
 
     /**
-     * Disables the user controller of a car.
+     * Disables the controllers of a car.
      */
-    private void BlockCarControls(CarController car) {
+    private void BlockCarComponents(CarController car) {
+        car.GetComponent<Rigidbody>().isKinematic = true;
         car.GetComponent<CarController>().enabled = false;
         car.GetComponent<CarUserControl>().enabled = false;
+        car.GetComponent<CarAudio>().enabled = false;
     }
 
 
@@ -78,9 +81,13 @@ public class ReplayController : HasRaceComponents {
      * Obtains all the circuit cameras active on the scene.
      */
     private void SetupCircuitCameras() {
+        Camera carCamera = car.GetComponentInChildren<Camera>();
+
         foreach (var o in GameObject.FindGameObjectsWithTag(TAG_OF_CAMERA)) {
-            if (o.GetComponent<Camera>() != null) {
-                cameras.Add(o.GetComponent<Camera>());
+            Camera camera = o.GetComponent<Camera>();
+
+            if (camera != null && camera != carCamera) {
+                cameras.Add(camera);
             }
         }
     }

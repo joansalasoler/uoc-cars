@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: RaceSetup
   m_EditorClassIdentifier: 
   availableCars:
-  - name: Sports Car
+  - name: Coche Deportivo
     car: {fileID: 5581540016642423715, guid: c9917f66a686ce8bcb74a478d214cb70, type: 3}
     ghost: {fileID: 3026994448103878991, guid: 412edec571cb433389c7ee9673194c68, type: 3}
-  - name: Future Car
+  - name: Coche Futurista
     car: {fileID: 5581540016642423715, guid: 5dfcea6f49008ffbea9036141826e47b, type: 3}
     ghost: {fileID: 3026994448103878991, guid: 412edec571cb433389c7ee9673194c68, type: 3}
   availableCircuits:
-  - name: Mountain Circuit
+  - name: "Circuito de Monta\xF1a"
     circuit: {fileID: 4456008421167745509, guid: 9f23b67bfcbe0b866a8b0143fa7e1f2f,
       type: 3}
-  - name: Testing Circuit
+  - name: Circuito de Pruebas
     circuit: {fileID: 1996381972869073349, guid: 8337764a23f54e7c9953f6f58905ad0e,
       type: 3}

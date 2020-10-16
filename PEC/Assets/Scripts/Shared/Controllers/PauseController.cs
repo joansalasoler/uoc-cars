@@ -9,6 +9,8 @@ namespace Shared.Controllers {
      */
     public class PauseController : MonoBehaviour {
 
+        [SerializeField] private GameObject overlay = null;
+
         /**
          * Shows the main menu scene.
          */
@@ -32,9 +34,9 @@ namespace Shared.Controllers {
          */
         public void TogglePause() {
             Canvas canvas = GetComponent<Canvas>();
-            Time.timeScale = canvas.enabled ? 1.0f : 0.0f;
-            AudioListener.pause = (canvas.enabled == false);
-            canvas.enabled = (canvas.enabled == false);
+            Time.timeScale = overlay.activeSelf ? 1.0f : 0.0f;
+            AudioListener.pause = (overlay.activeSelf == false);
+            overlay.SetActive(overlay.activeSelf == false);
         }
 
 

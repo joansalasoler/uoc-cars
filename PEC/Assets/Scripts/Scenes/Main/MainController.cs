@@ -15,6 +15,9 @@ public class MainController : MonoBehaviour {
     /** Option picker button template */
     [SerializeField] private GameObject optionPrefab = null;
 
+    /** Main menu canvas */
+    [SerializeField] private GameObject menu = null;
+
     /** Circuit picker button group */
     [SerializeField] private Transform circuits = null;
 
@@ -28,6 +31,7 @@ public class MainController : MonoBehaviour {
     private void Start() {
         InitCarOptions();
         InitCircuitOptions();
+        menu.SetActive(true);
     }
 
 
@@ -81,6 +85,7 @@ public class MainController : MonoBehaviour {
     private void OnCarChoosen(string name) {
         PlayerPrefs.SetString("CarSetupName", name);
         cars.parent.gameObject.SetActive(false);
+        menu.SetActive(true);
     }
 
 
@@ -90,5 +95,6 @@ public class MainController : MonoBehaviour {
     private void OnCircuitChoosen(string name) {
         PlayerPrefs.SetString("CircuitSetupName", name);
         circuits.parent.gameObject.SetActive(false);
+        menu.SetActive(true);
     }
 }
